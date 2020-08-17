@@ -22,7 +22,7 @@ const trackRoute = express.Router();
 var app = express();
 
 var cors = require('cors');
-app.use(cors({ credentials: true }));
+app.use(cors({ credentials: true, origin: "http://localhost:8080" || process.env.origin }));
 
 
 
