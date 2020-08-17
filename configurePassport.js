@@ -75,6 +75,7 @@ passport.serializeUser(function (user, cb) {
         saveUninitialized: false,
         proxy: true,
         cookie : {
+          sameSite="none",
           secure: true,
         }
       })
