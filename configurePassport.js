@@ -67,14 +67,14 @@ passport.serializeUser(function (user, cb) {
     // Use application-level middleware for common functionality, including
     // logging, parsing, and session handling.
     app.use(require("morgan")("combined"));
-  
+    app.set('trust proxy', true)
     app.use(
       require("express-session")({
         secret: process.env.secretKey || "inalambria",
         resave: false,
         saveUninitialized: false,
+        proxy: true,
         cookie : {
-          sameSite: 'none', // THIS is the config you are looing for.
           secure: true,
         }
       })
