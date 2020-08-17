@@ -75,7 +75,7 @@ passport.serializeUser(function (user, cb) {
         saveUninitialized: false,
         cookie : {
           sameSite: 'none', // THIS is the config you are looing for.
-          secure: false,
+          secure: true,
         }
       })
     );
