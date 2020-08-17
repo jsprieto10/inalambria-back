@@ -64,6 +64,7 @@ trackRoute.get('/:trackID', ensureLoggedIn,(req, res) => {
     try {
         dbApi.streaming(req,res);
     } catch (err) {
+        console.log(err)
         res.statusCode = 500;
         res.send({ error: err })
     }
