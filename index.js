@@ -74,7 +74,7 @@ trackRoute.get('/:trackID', ensureLoggedIn,(req, res) => {
 
 
 
-app.listen(3001 || process.env.port, () => {
+app.listen( process.env.PORT || 3000, () => {
     console.log("Listening on:3001");
 });
 
