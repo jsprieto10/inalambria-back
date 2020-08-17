@@ -22,7 +22,7 @@ const trackRoute = express.Router();
 var app = express();
 
 var cors = require('cors');
-app.use(cors({ credentials: true, origin: "http://localhost:8080" || process.env.origin }));
+
 
 
 
@@ -32,6 +32,8 @@ app.use(bodyParser.json());
 
 const configPassport = require("./configurePassport.js");
 configPassport(app);
+
+app.use(cors({ credentials: true, origin: "http://localhost:8080" || process.env.origin }));
 
 app.use('/tracks', trackRoute);
 
