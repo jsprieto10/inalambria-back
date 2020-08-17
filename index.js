@@ -44,6 +44,11 @@ app.post("/register", (req, res) => {
     });
 });
 
+app.get("/current", (req, res) => {
+
+    res.send({ "user": req.user })
+})
+
 app.post(
     "/login",
     passport.authenticate("local", { failureRedirect: "/fail" }),
