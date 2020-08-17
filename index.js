@@ -22,7 +22,9 @@ const trackRoute = express.Router();
 var app = express();
 
 var cors = require('cors');
-app.use(cors());
+app.use(cors({ credentials: true }));
+
+
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -64,10 +66,10 @@ trackRoute.post('/', ensureLoggedIn, (req, res) => {
 /**
  * GET /tracks/:trackID
  */
-trackRoute.get('/:trackID', ensureLoggedIn,(req, res) => {
+trackRoute.get('/:trackID', ensureLoggedIn, (req, res) => {
     try {
         console.log("que pasa 1")
-        dbApi.streaming(req,res);
+        dbApi.streaming(req, res);
     } catch (err) {
         console.log(err)
         res.statusCode = 500;
@@ -80,7 +82,7 @@ trackRoute.get('/:trackID', ensureLoggedIn,(req, res) => {
 
 
 
-app.listen( process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("Listening on:3001");
 });
 
