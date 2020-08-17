@@ -19,7 +19,7 @@ MongoUtils.Register = (object, colName, cbk) => {
     MongoUtils.findOne({ username: object.username }, "users", (user) => {
         if (user) cbk({ error: "El userName ya existe" });
         else {
-            const client = new mongodb.MongoClient(uri, { useNewUrlParser: true });
+            const client = new mongodb.MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
             console.log("base de datos insert", object);
             client.connect((err) => {
                 if (err) throw err;
@@ -46,7 +46,7 @@ MongoUtils.Register = (object, colName, cbk) => {
 
 MongoUtils.findOne = (query, colName, cbk) => {
     console.log("entra la base de datoss findOne", query);
-    const client = new mongodb.MongoClient(uri, { useNewUrlParser: true });
+    const client = new mongodb.MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     client.connect((err) => {
         if (err) throw err;
         const collection = client.db(dbName).collection(colName);
@@ -63,7 +63,7 @@ MongoUtils.findOne = (query, colName, cbk) => {
 
 
 MongoUtils.uploadSong = (req, res) => {
-    const client = new mongodb.MongoClient(uri, { useNewUrlParser: true });
+    const client = new mongodb.MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     client.connect((err) => {
 
 
@@ -119,10 +119,11 @@ MongoUtils.uploadSong = (req, res) => {
 }
 
 MongoUtils.streaming = (req, res) => {
-    const client = new mongodb.MongoClient(uri, { useNewUrlParser: true });
+    console.log("entro aca")
+    const client = new mongodb.MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     client.connect((err) => {
 
-
+        console.log("se conecto")
         let db = client.db(dbName)
         try {
             var trackID = new mongodb.ObjectID(req.params.trackID);
@@ -133,9 +134,11 @@ MongoUtils.streaming = (req, res) => {
         res.set('content-type', 'audio/mp3');
         res.set('accept-ranges', 'bytes');
 
+        console.log("intenta el bucket")
         let bucket = new mongodb.GridFSBucket(db, {
             bucketName: 'tracks'
         });
+        console.log("creo el bucket")
 
         let downloadStream = bucket.openDownloadStream(trackID);
 
@@ -143,7 +146,8 @@ MongoUtils.streaming = (req, res) => {
             res.write(chunk);
         });
 
-        downloadStream.on('error', () => {
+        downloadStream.on('error', (err) => {
+            throw err
             res.sendStatus(500);
         });
 

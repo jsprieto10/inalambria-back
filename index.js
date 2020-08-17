@@ -62,6 +62,7 @@ trackRoute.post('/', ensureLoggedIn, (req, res) => {
  */
 trackRoute.get('/:trackID', ensureLoggedIn,(req, res) => {
     try {
+        console.log("que pasa 1")
         dbApi.streaming(req,res);
     } catch (err) {
         console.log(err)
