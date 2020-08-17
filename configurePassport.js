@@ -73,7 +73,6 @@ passport.serializeUser(function (user, cb) {
         secret: process.env.secretKey || "inalambria",
         resave: false,
         saveUninitialized: false,
-        proxy: true,
         cookie : {
           sameSite="none",
           secure: true,
