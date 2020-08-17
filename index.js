@@ -21,6 +21,10 @@ var ensureLoggedIn = (req, res, next) => {
 const trackRoute = express.Router();
 var app = express();
 
+var cors = require('cors');
+app.use(cors());
+
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
