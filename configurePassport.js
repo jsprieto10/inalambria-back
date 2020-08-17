@@ -73,6 +73,9 @@ passport.serializeUser(function (user, cb) {
         secret: process.env.secretKey || "inalambria",
         resave: false,
         saveUninitialized: false,
+        cookie : {
+          sameSite: 'strict', // THIS is the config you are looing for.
+        }
       })
     );
   
