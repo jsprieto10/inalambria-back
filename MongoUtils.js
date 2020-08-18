@@ -104,7 +104,6 @@ MongoUtils.uploadSong = (req, res) => {
 
             uploadStream.on('finish', () => {
 
-
                 db.collection("tracks").insertOne({ username: req.user.username, name: trackName, artist: req.body.artist, _id: id }, (err) => {
 
                     if (err) throw err;

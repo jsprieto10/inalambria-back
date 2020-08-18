@@ -63,7 +63,7 @@ app.post(
 
 app.get('/createList/:name', ensureLoggedIn, (req, res) => {
     try {
-        dbApi.insertOneGeneric((ans) => res.send(ans), "playList", { owner: req.user.username, name: req.params.name })
+        dbApi.insertOneGeneric((ans) => res.send(ans), "playList", { owner: req.user.username, name: req.params.name , tracks: []})
     } catch (err) {
         res.statusCode = 500;
         res.send({ error: err })
