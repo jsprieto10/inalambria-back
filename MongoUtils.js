@@ -71,7 +71,7 @@ MongoUtils.uploadSong = (req, res) => {
 
 
         const storage = multer.memoryStorage()
-        const upload = multer({ storage: storage, limits: { fileSize: 6000000 } });
+        const upload = multer({ storage: storage, limits: { fileSize: 16000000 } });
         upload.single('track')(req, res, (err) => {
             if (err) {
                 console.log(err)
