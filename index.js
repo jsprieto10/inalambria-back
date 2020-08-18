@@ -6,9 +6,11 @@
 var bodyParser = require("body-parser");
 var express = require("express");
 var passport = require("passport");
+var cors = require('cors');
 
-
-
+/**
+ * Verifica si hay un usuario loggeado para acceder a los recursos
+ */
 var ensureLoggedIn = (req, res, next) => {
     console.log(req.user)
     if (req.user) {
@@ -22,25 +24,24 @@ var ensureLoggedIn = (req, res, next) => {
 const trackRoute = express.Router();
 var app = express();
 
-var cors = require('cors');
-
-
-
-
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+//Configuración de passport
 const configPassport = require("./configurePassport.js");
 configPassport(app);
 
 app.use(cors({ credentials: true, origin: process.env.origin || "http://localhost:8080" }));
 
+// Creación de las rutas
 app.use('/tracks', trackRoute);
 
 const dbApi = require("./MongoUtils");
-const MongoUtils = require("./MongoUtils");
 
+/**
+ * Registra un nuevo usuario en la aplicación
+ */
 app.post("/register", (req, res) => {
     user = req.body;
     dbApi.Register(user, "users", (user) => {
@@ -48,11 +49,17 @@ app.post("/register", (req, res) => {
     });
 });
 
+/**
+ * Dar usuario actual, retorna undefined si no hay ninguno
+ */
 app.get("/current", (req, res) => {
 
     res.send({ "user": req.user })
 })
 
+/**
+ * Loggearse
+ */
 app.post(
     "/login",
     passport.authenticate("local", { failureRedirect: "/fail" }),
@@ -61,6 +68,10 @@ app.post(
     }
 );
 
+/**
+ * Crear una nueva playlist
+ * name: nombre de la nueva lista
+ */
 app.get('/createList/:name', ensureLoggedIn, (req, res) => {
     try {
         dbApi.insertOneGeneric((ans) => res.send(ans), "playList", { owner: req.user.username, name: req.params.name, tracks: [] })
@@ -70,7 +81,9 @@ app.get('/createList/:name', ensureLoggedIn, (req, res) => {
     }
 })
 
-
+/**
+ * Agregar canción a la playlist
+ */
 app.post('/addToList/', ensureLoggedIn, (req, res) => {
 
     try {
@@ -82,6 +95,9 @@ app.post('/addToList/', ensureLoggedIn, (req, res) => {
     }
 })
 
+/**
+ * Agregar una canción
+ */
 trackRoute.post('/', ensureLoggedIn, (req, res) => {
     try {
         dbApi.uploadSong(req, res);
@@ -91,7 +107,9 @@ trackRoute.post('/', ensureLoggedIn, (req, res) => {
         res.send({ error: err })
     }
 });
-
+/**
+ * Get generico a la base de datos
+ */
 app.post('/getData', ensureLoggedIn, (req, res) => {
     try {
 
@@ -105,7 +123,8 @@ app.post('/getData', ensureLoggedIn, (req, res) => {
 
 
 /**
- * GET /tracks/:trackID
+ * Reproducir una canción
+ * trackID: Id de la canción a reproducir
  */
 trackRoute.get('/:trackID', ensureLoggedIn, (req, res) => {
     try {
