@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 const configPassport = require("./configurePassport.js");
 configPassport(app);
 
-app.use(cors({ credentials: true, origin: "http://localhost:8080" || process.env.origin }));
+app.use(cors({ credentials: true, origin: process.env.origin || "http://localhost:8080" }));
 
 app.use('/tracks', trackRoute);
 
