@@ -11,7 +11,7 @@ const saltRounds = 10;
 
 const MongoUtils = {},
     dbName = "inalambria",
-    uri = process.env.uri || "mongodb+srv://admin:htmlcap27@cluster.cgnmp.mongodb.net/inalambria?retryWrites=true&w=majority";;
+    uri = process.env.uri || "mongodb://localhost:1207";
 
 
 MongoUtils.Register = (object, colName, cbk) => {
