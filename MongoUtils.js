@@ -167,7 +167,7 @@ MongoUtils.searchOneGeneric = async function (colName, object) {
 
 MongoUtils.createObjectId = (o) => {
 
-    let object = {...o}
+    let object = { ...o }
     object._id = new mongodb.ObjectID(o._id);
     return object
 }
@@ -189,6 +189,16 @@ MongoUtils.insertOneGeneric = (cbk, colName, object) => {
         });
     });
 };
+
+MongoUtils.findAll = (cbk, colName, query) => {
+
+    const client = await new mongodb.MongoClient(uri, { useNewUrlParser: true }).connect();
+    let finds = await client.db(dbName).collection(colName).find(query)
+    let array = await finds.toArray
+
+    cbk(array)
+
+}
 
 
 MongoUtils.UpdateOne = (cbk, colName, query, object) => {

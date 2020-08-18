@@ -63,17 +63,18 @@ app.post(
 
 app.get('/createList/:name', ensureLoggedIn, (req, res) => {
     try {
-        dbApi.insertOneGeneric((ans) => res.send(ans), "playList", { owner: req.user.username, name: req.params.name , tracks: []})
+        dbApi.insertOneGeneric((ans) => res.send(ans), "playList", { owner: req.user.username, name: req.params.name, tracks: [] })
     } catch (err) {
         res.statusCode = 500;
         res.send({ error: err })
     }
 })
 
+
 app.post('/addToList/', ensureLoggedIn, (req, res) => {
 
     try {
-        let object = dbApi.createObjectId({"_id": req.body.trackId})
+        let object = dbApi.createObjectId({ "_id": req.body.trackId })
         dbApi.searchOneGeneric("tracks", object).then(track => dbApi.UpdateOne((ans) => res.send({ code: "ok" }), "playList", dbApi.createObjectId({ _id: req.body.playlist }), track))
     } catch (err) {
         res.statusCode = 500;
@@ -90,6 +91,18 @@ trackRoute.post('/', ensureLoggedIn, (req, res) => {
         res.send({ error: err })
     }
 });
+
+trackRoute.get('/', ensureLoggedIn, (req, res) => {
+    try {
+
+        dbApi.findAll((data) => res.send(data), req.body.collection, req.body.query)
+
+    } catch (err) {
+        res.statusCode = 500;
+        res.send({ error: err })
+    }
+})
+
 
 /**
  * GET /tracks/:trackID
