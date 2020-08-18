@@ -10,6 +10,7 @@ var passport = require("passport");
 
 
 var ensureLoggedIn = (req, res, next) => {
+    console.log(req.user)
     if (req.user) {
         next();
     } else {
@@ -38,6 +39,7 @@ app.use(cors({ credentials: true, origin: "http://localhost:8080" || process.env
 app.use('/tracks', trackRoute);
 
 const dbApi = require("./MongoUtils");
+const MongoUtils = require("./MongoUtils");
 
 app.post("/register", (req, res) => {
     user = req.body;
@@ -61,7 +63,17 @@ app.post(
 
 app.get('/createList/:name', ensureLoggedIn, (req, res) => {
     try {
-        dbApi.insertOneGeneric( (ans) => res.send(ans), "playList", {owner:req.user.username, name: req.params.name})
+        dbApi.insertOneGeneric((ans) => res.send(ans), "playList", { owner: req.user.username, name: req.params.name })
+    } catch (err) {
+        res.statusCode = 500;
+        res.send({ error: err })
+    }
+})
+
+app.post('/addToList/', ensureLoggedIn, (req, res) => {
+
+    try {
+        dbApi.searchOneGeneric("tracks", req.body.trackId).then(track => dbApi.UpdateOne((ans) => res.send({code: "ok"}), "playList", { _id: req.body.playlist }, track))
     } catch (err) {
         res.statusCode = 500;
         res.send({ error: err })

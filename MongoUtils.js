@@ -158,16 +158,11 @@ MongoUtils.streaming = (req, res) => {
 }
 
 
-MongoUtils.searchOneGeneric = async (cbk, colName, object) => {
+MongoUtils.searchOneGeneric = async function (colName, object) {
 
-    const client = new mongodb.MongoClient(uri, { useNewUrlParser: true });
-    client.connect((err) => {
-        if (err) throw err;
-
-
-        let find = await client.db(dbName).collection(colName).findOne(object)
-        return find
-    })
+    const client = await new mongodb.MongoClient(uri, { useNewUrlParser: true }).connect();
+    let find = await client.db(dbName).collection(colName).findOne(object)
+    return find
 }
 
 MongoUtils.insertOneGeneric = (cbk, colName, object) => {
@@ -187,5 +182,26 @@ MongoUtils.insertOneGeneric = (cbk, colName, object) => {
         });
     });
 };
+
+
+MongoUtils.UpdateOne = (cbk, colName, query, object) => {
+
+    const client = new mongodb.MongoClient(uri, { useNewUrlParser: true });
+    console.log("base de datos insert", object);
+    client.connect((err) => {
+        if (err) throw err;
+        if (object == undefined) {
+            throw new Error("Object can't be null or udefined");
+        }
+    })
+    const collection = client.db(dbName).collection(colName);
+
+    collection.updateOne(query, { $push: { tracks: object } }, () => {
+        cbk()
+        client.close()
+    })
+}
+
+
 
 module.exports = MongoUtils;
