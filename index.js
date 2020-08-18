@@ -74,7 +74,7 @@ app.post('/addToList/', ensureLoggedIn, (req, res) => {
 
     try {
         let object = dbApi.createObjectId({"_id": req.body.trackId})
-        dbApi.searchOneGeneric("tracks", object).then(track => dbApi.UpdateOne((ans) => res.send({ code: "ok" }), "playList", { _id: req.body.playlist }, track))
+        dbApi.searchOneGeneric("tracks", object).then(track => dbApi.UpdateOne((ans) => res.send({ code: "ok" }), "playList", { _id: dbApi.createObjectId(req.body.playlist) }, track))
     } catch (err) {
         res.statusCode = 500;
         res.send({ error: err })
