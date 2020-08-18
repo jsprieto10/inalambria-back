@@ -165,6 +165,12 @@ MongoUtils.searchOneGeneric = async function (colName, object) {
     return find
 }
 
+MongoUtils.createObjectId = (object) => {
+
+    object._id = new mongodb.ObjectID(object._id);
+    return object
+}
+
 MongoUtils.insertOneGeneric = (cbk, colName, object) => {
     const client = new mongodb.MongoClient(uri, { useNewUrlParser: true });
     console.log("base de datos insert", object);

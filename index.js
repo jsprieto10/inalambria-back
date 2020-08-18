@@ -73,7 +73,7 @@ app.get('/createList/:name', ensureLoggedIn, (req, res) => {
 app.post('/addToList/', ensureLoggedIn, (req, res) => {
 
     try {
-        dbApi.searchOneGeneric("tracks", { "_id": req.body.trackId }).then(track => dbApi.UpdateOne((ans) => res.send({ code: "ok" }), "playList", { _id: req.body.playlist }, track))
+        dbApi.searchOneGeneric("tracks", dbApi.createObjectId({ "_id": req.body.trackId })).then(track => dbApi.UpdateOne((ans) => res.send({ code: "ok" }), "playList", { _id: req.body.playlist }, track))
     } catch (err) {
         res.statusCode = 500;
         res.send({ error: err })
