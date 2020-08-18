@@ -190,7 +190,7 @@ MongoUtils.insertOneGeneric = (cbk, colName, object) => {
     });
 };
 
-MongoUtils.findAll = (cbk, colName, query) => {
+MongoUtils.findAll = async function (cbk, colName, query) {
 
     const client = await new mongodb.MongoClient(uri, { useNewUrlParser: true }).connect();
     let finds = await client.db(dbName).collection(colName).find(query)
