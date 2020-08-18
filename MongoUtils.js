@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const multer = require('multer');
 
 /**
- * NodeJS Module dependencies.
+ * Conexión con la base de datos. Este modulo se encarga de todas las conexiones y operaciones con Mongo
  */
 const { Readable } = require('stream');
 
@@ -13,7 +13,12 @@ const MongoUtils = {},
     dbName = "inalambria",
     uri = process.env.uri || "mongodb://localhost:1207";
 
-
+/**
+ * Registra un nuevo usuario en la base de datos y guarda su clave encriptada
+ * object: JSON del usuario a registrar
+ * colName: nombre de la colección de Usuarios
+ * cbk: callback
+ */
 MongoUtils.Register = (object, colName, cbk) => {
     console.log("entra la base de datoss insertOne", object);
     MongoUtils.findOne({ username: object.username }, "users", (user) => {
@@ -43,7 +48,12 @@ MongoUtils.Register = (object, colName, cbk) => {
 };
 
 
-
+/**
+ * Encuentra el objeto en la base de datos
+ * query: JSON del objeto a encontrar
+ * colName: nombre de la colección en la cual buscar
+ * cbk: callback
+ */
 MongoUtils.findOne = (query, colName, cbk) => {
     console.log("entra la base de datoss findOne", query);
     const client = new mongodb.MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -61,7 +71,10 @@ MongoUtils.findOne = (query, colName, cbk) => {
 };
 
 
-
+/**
+ * Sube una nueva canción a la base de datos
+ * Se suben los bytes del audio a mongo
+ */
 MongoUtils.uploadSong = (req, res) => {
     const client = new mongodb.MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     client.connect((err) => {
@@ -116,7 +129,9 @@ MongoUtils.uploadSong = (req, res) => {
         });
     })
 }
-
+/**
+ * Extrae el audio guardado en la base de datos para reproducirlo
+ */
 MongoUtils.streaming = (req, res) => {
     console.log("entro aca")
     const client = new mongodb.MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -156,7 +171,12 @@ MongoUtils.streaming = (req, res) => {
     });
 }
 
-
+/**
+ * Encuentra el objeto en la base de datos
+ * object: JSON del objeto a encontrar
+ * colName: nombre de la colección en la cual buscar
+ 
+ */
 MongoUtils.searchOneGeneric = async function (colName, object) {
     console.log(object, "llega vacio")
     const client = await new mongodb.MongoClient(uri, { useNewUrlParser: true }).connect();
@@ -165,6 +185,11 @@ MongoUtils.searchOneGeneric = async function (colName, object) {
     return find
 }
 
+/**
+ * Crea el ObjectId para buscar en las colecciones usando el id
+ * o: JSON del objeto a encontrar, tiene un atributo _id
+ 
+ */
 MongoUtils.createObjectId = (o) => {
 
     let object = { ...o }
@@ -172,6 +197,13 @@ MongoUtils.createObjectId = (o) => {
     return object
 }
 
+/**
+ * Agrega un objeto a la coleccion especificada
+ * object: JSON del objeto a encontrar
+ * colName: nombre de la colección en la cual buscar
+ * cbk: callback
+ 
+ */
 MongoUtils.insertOneGeneric = (cbk, colName, object) => {
     const client = new mongodb.MongoClient(uri, { useNewUrlParser: true });
     console.log("base de datos insert", object);
@@ -190,6 +222,12 @@ MongoUtils.insertOneGeneric = (cbk, colName, object) => {
     });
 };
 
+/**
+ * Retorna todos los objetos filtrados de la coleccion especificada
+ * query: JSON del objeto a encontrar
+ * colName: nombre de la colección en la cual buscar
+ * cbk: callback
+ */
 MongoUtils.findAll = async function (cbk, colName, query) {
 
     const client = await new mongodb.MongoClient(uri, { useNewUrlParser: true }).connect();
@@ -200,7 +238,13 @@ MongoUtils.findAll = async function (cbk, colName, query) {
 
 }
 
-
+/**
+ * Agrega una canción a la lista especificada en el query
+ * query: JSON con el id de la lista a agregar
+ * colName: nombre de la colección de las playlist
+ * object: canción a agregar a la playlist
+ * cbk: callback
+ */
 MongoUtils.UpdateOne = (cbk, colName, query, object) => {
 
     const client = new mongodb.MongoClient(uri, { useNewUrlParser: true });
