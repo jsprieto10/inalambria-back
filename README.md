@@ -1,4 +1,4 @@
-# YourMusic
+# YourMusic Back
 
 
 ## Authors:
@@ -14,11 +14,10 @@ YourMusic is a basic music reproductor thar allows you to:
 - Add songs to your playlists
 - Listen to your favorite songs
 
-You can check the deployed version [here](https://inalambria-front.jsprieto10.vercel.app/).
+You can check the deployed version here [back url](https://inalambria.herokuapp.com/).
 
 ## Deployment
 
-You can check the deployed version [here](https://inalambria-front.jsprieto10.vercel.app/)
 - Clone this repo
 
 - Run the following commands
@@ -28,7 +27,7 @@ You can check the deployed version [here](https://inalambria-front.jsprieto10.ve
   npm start # Starts the front end
   ```
 
-- Go to localhost:8080 on your browser
+- Go to http://localhost:3000 on your browser
 
 
 ## Screenshots
