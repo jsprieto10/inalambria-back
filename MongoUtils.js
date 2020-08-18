@@ -193,12 +193,13 @@ MongoUtils.UpdateOne = (cbk, colName, query, object) => {
         if (object == undefined) {
             throw new Error("Object can't be null or udefined");
         }
-    })
-    const collection = client.db(dbName).collection(colName);
 
-    collection.updateOne(query, { $push: { tracks: object } }, () => {
-        cbk()
-        client.close()
+        const collection = client.db(dbName).collection(colName);
+
+        collection.updateOne(query, { $push: { tracks: object } }, () => {
+            cbk()
+            client.close()
+        })
     })
 }
 
