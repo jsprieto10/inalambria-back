@@ -92,7 +92,7 @@ trackRoute.post('/', ensureLoggedIn, (req, res) => {
     }
 });
 
-trackRoute.get('/', ensureLoggedIn, (req, res) => {
+app.post('/getData', ensureLoggedIn, (req, res) => {
     try {
 
         dbApi.findAll((data) => res.send(data), req.body.collection, req.body.query)
