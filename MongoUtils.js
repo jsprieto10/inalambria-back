@@ -162,7 +162,7 @@ MongoUtils.searchOneGeneric = async function (colName, object) {
     console.log(object, "llega vacio")
     const client = await new mongodb.MongoClient(uri, { useNewUrlParser: true }).connect();
     let find = await client.db(dbName).collection(colName).findOne(object)
-    console.log(find)
+    console.log(find, "se ejecuta")
     return find
 }
 
