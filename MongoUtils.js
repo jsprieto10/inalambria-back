@@ -159,16 +159,17 @@ MongoUtils.streaming = (req, res) => {
 
 
 MongoUtils.searchOneGeneric = async function (colName, object) {
-    console.log(object)
+    console.log(object, "llega vacio")
     const client = await new mongodb.MongoClient(uri, { useNewUrlParser: true }).connect();
     let find = await client.db(dbName).collection(colName).findOne(object)
     console.log(find)
     return find
 }
 
-MongoUtils.createObjectId = (object) => {
+MongoUtils.createObjectId = (o) => {
 
-    object._id = new mongodb.ObjectID(object._id);
+    let object = {...o}
+    object._id = new mongodb.ObjectID(o._id);
     return object
 }
 
