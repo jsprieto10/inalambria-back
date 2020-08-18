@@ -205,7 +205,7 @@ MongoUtils.UpdateOne = (cbk, colName, query, object) => {
         console.log(object, "antes de meter")
         collection.updateOne(query, { $push: { tracks: object } }, (err, result) => {
             if (err) throw err;
-            console.log(result)
+            //console.log(result)
             cbk()
             client.close()
         })
