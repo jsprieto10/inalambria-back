@@ -194,7 +194,7 @@ MongoUtils.findAll = async function (cbk, colName, query) {
 
     const client = await new mongodb.MongoClient(uri, { useNewUrlParser: true }).connect();
     let finds = await client.db(dbName).collection(colName).find(query)
-    let array = await finds.toArray
+    let array = await finds.toArray()
 
     cbk(array)
 
